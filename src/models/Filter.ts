@@ -1,10 +1,10 @@
-import IFilter from "@/models/interfaces/IFilter"
-import { EnumFilter } from "@/models/enums/EnumFilter"
+import IFilter from "../models/interfaces/IFilter"
+import { EnumFilter } from "../models/enums/EnumFilter"
 
 export default class Filter implements IFilter {
-    id: string
-    type: EnumFilter
-    value: object
+    id: string = ""
+    type: EnumFilter = EnumFilter.UNDEFINED
+    value: object = {}
 
     constructor(id: string, type: EnumFilter, value: object) {
         this.setId(id)

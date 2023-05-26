@@ -17,12 +17,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "jsx": "preserve"
   },
   "include": [
-    "src"
-, "jsconfig.json"  ]
+    "src",
+    "jsconfig.json"
+  ]
 }

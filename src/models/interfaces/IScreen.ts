@@ -1,10 +1,10 @@
-import { EnumScreen } from "@/models/enums/EnumScreen"
-import IFilter from "@/models/interfaces/IFilter"
+import { EnumScreen } from "@enums/EnumScreen"
+import IFilter from "@interfaces/IFilter"
 
 export default interface IScreen {
     name: EnumScreen
     filters: IFilter[]
 
-    setName(name: EnumScreen)
-    setFilters(filters: IFilter[])
+    setName(name: EnumScreen) : void
+    setFilters(filters: IFilter[]) : void
 }
