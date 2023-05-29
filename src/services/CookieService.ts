@@ -10,4 +10,12 @@ export default class CookieService {
     public read(key: string) {
         return cookies.get(key)
     }
+
+    public update(key: string, value: object) {
+        cookies.set(key, value)
+    }
+
+    public delete(key: string) {
+        cookies.remove(key)
+    }
 }

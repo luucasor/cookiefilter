@@ -15,15 +15,18 @@ export default class Screen implements IScreen {
     this.name = name
   }
 
-  public setFilters(filters: IFilter[]) {
+  public setFilters(filters: IFilter[] = []) {
     this.filters = filters
   }
 
   public addFilter(filter: IFilter) {
-    let existFilter = this.filters.find(f => f.id == filter.id)
-    if(existFilter){
+    if(this.existsFilter(filter.id)){
       this.filters = this.filters.filter(f => f.id !== filter.id)
     } 
     this.filters.push(filter)
+  }
+
+  private existsFilter(filterId: string) {
+    return this.filters.find(f => f.id == filterId);
   }
 }

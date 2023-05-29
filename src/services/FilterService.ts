@@ -7,43 +7,50 @@ export default class FilterService {
     private screens: Array<Screen> = []
 
     public saveFilter(screenName: EnumScreen, filter: Filter) {
-        let telaExisteDentroDaLista = this.screens.find(k => k.name == screenName)
-        if(telaExisteDentroDaLista){
-            //sim: salva filtro na lista
-            let screen = this.screens.find(k => k.name == screenName)
-            screen?.addFilter(filter)
+        if(this.existsScreen(screenName)){
+            this.addFilterInScreen(screenName, filter)
         } else {
-            //não: cria tela e salva filtro na lista
-            this.screens.push(new Screen(screenName, [filter]))
+            this.createScreen(screenName)
+            this.addFilterInScreen(screenName, filter)            
         }
     }
 
-    public removeFilter(screenName: EnumScreen, filterName: string) {
-        //verifica se lista existe:
-            //sim: 
-                //verifica se tela existe na lista
-                    //sim: verifica se filtro existe na lista
-                        //sim: remove filtro da lista
-                        //não: não faz nada
-                    //não: não faz nada
-            //não: não faz nada
+    public removeFilter(screenName: EnumScreen, filterId: string) {
+        if(this.existsScreen(screenName) && this.existsFilter(screenName, filterId)){
+            let screen = this.screens.find(item => item.name === screenName)
+            let filter = screen?.filters.filter(item => item.id !== filterId)
+            screen?.setFilters(filter)
+        }
     }
 
     public removeAllFilters(screenName: EnumScreen) {
-        //verifica se lista existe:
-            //sim: 
-                //verifica se tela existe
-                    //sim: remove tela da lista
-                    //não: não faz nada
-            //não: cria lista e salva filtro na lista
-    }
-
-
-    public findScreenInFilterCookie(key: EnumScreen, screens: Array<Screen>) : any {
-        return screens !== undefined ? screens.find(k => k.name == EnumScreen.COBRANCAS) : null
+        if(this.existsScreen(screenName)){
+            let screen = this.screens.find(item => item.name === screenName)
+            screen?.setFilters([])
+        }
     }
 
     public getScreens(): Array<Screen> {
         return this.screens
+    }
+
+    private createScreen(screenName: EnumScreen) {
+        this.screens.push(new Screen(screenName, []))
+    }
+
+    private existsScreen(screenName: EnumScreen): boolean {
+        return this.screens.some(item => item.name === screenName)
+    }
+
+    private existsFilter(screenName: EnumScreen, filterId: string): boolean | undefined {
+        return this.findScreen(screenName)?.filters.some(item => item.id === filterId)
+    }
+
+    private findScreen(screenName: EnumScreen): Screen | undefined {
+        return this.screens.find(item => item.name === screenName)
+    }
+
+    private addFilterInScreen(screenName: EnumScreen, filter: Filter): void {
+        this.findScreen(screenName)?.addFilter(filter)
     }
 }

@@ -1,23 +1,35 @@
-import TestBuilderService from "./builders/ScreenBuilder"
-import CookieService from "../services/CookieService"
-import FilterService from "../services/FilterService"
 import { EnumCookie } from "../models/enums/EnumCookie"
-import { EnumScreen } from "../models/enums/EnumScreen"
+import CookieService from "../services/CookieService"
+import ScreenBuilder from "./builders/ScreenBuilder"
 
 let cookieService: CookieService
-let filterService: FilterService
-let testBuilderService: TestBuilderService
+let screenBuilder: ScreenBuilder
 
 beforeEach(() => {
     cookieService = new CookieService()
-    filterService = new FilterService()
-    testBuilderService = new TestBuilderService()
+    screenBuilder = new ScreenBuilder()
 });
 
-test('deve gravar informação no cookie e verificar se os filtros da tela de cobranças foram salvos corretamente', () => {    
-    cookieService.create(EnumCookie.FILTER_SCREEN, testBuilderService.buildScreens())
+test('Create: deve gravar informação no cookie e verificar se foi salvo corretamente', () => {    
+    cookieService.create(EnumCookie.FILTER_SCREEN, screenBuilder.buildScreens())
     let cookieFilterScreen = cookieService.read(EnumCookie.FILTER_SCREEN)
-    let screenCobrancas = filterService.findScreenInFilterCookie(EnumScreen.COBRANCAS, cookieFilterScreen)
-    expect(screenCobrancas).toEqual(testBuilderService.buildScreenCobrancas())
+    expect(cookieFilterScreen).toEqual(screenBuilder.buildScreens())
+})
+
+test('Read && Delete: deve gravar informação no cookie, verificar se foi gravado corretamente. Remover informação e verificar se foi removido corretamente', () => {    
+    cookieService.create(EnumCookie.FILTER_SCREEN, screenBuilder.buildScreens())
+    let cookieFilterScreen = cookieService.read(EnumCookie.FILTER_SCREEN)
+    expect(cookieFilterScreen).toEqual(screenBuilder.buildScreens())
+    cookieService.delete(EnumCookie.FILTER_SCREEN)
+    expect(cookieService.read(EnumCookie.FILTER_SCREEN)).toBeNull
+})
+
+test('Update: deve gravar informação no cookie, verificar se foi gravado corretamente. Editar informação, e verificar se foi editado corretamente.', () => {
+    cookieService.create(EnumCookie.FILTER_SCREEN, screenBuilder.buildScreens())
+    let cookieFilterScreen = cookieService.read(EnumCookie.FILTER_SCREEN)
+    expect(cookieFilterScreen).toEqual(screenBuilder.buildScreens())
+    cookieService.update(EnumCookie.FILTER_SCREEN, screenBuilder.buildScreenCobrancas())
+    let editedCookieFilterScreen = cookieService.read(EnumCookie.FILTER_SCREEN)
+    expect(editedCookieFilterScreen).toEqual(screenBuilder.buildScreenCobrancas())
 })
 
