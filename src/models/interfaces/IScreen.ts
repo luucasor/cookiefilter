@@ -7,4 +7,5 @@ export default interface IScreen {
 
     setName(name: EnumScreen) : void
     setFilters(filters: IFilter[]) : void
+    addFilter(filter: IFilter): void
 }
