@@ -50,6 +50,10 @@ export default class FilterService {
         return this.screens
     }
 
+    public getFiltersByScreen(screenName: EnumScreen): IFilter[] | undefined {
+        return this.findScreen(screenName)?.filters
+    }
+
     private createScreen(screenName: EnumScreen) {
         this.getScreens().push(new Screen(screenName, []))
     }
